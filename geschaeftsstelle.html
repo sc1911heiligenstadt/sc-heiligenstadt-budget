@@ -725,11 +725,23 @@
     if (!confirm(`„${sub.desc}" von ${sub.name} unwiderruflich löschen? Dies entfernt Beleg und Daten vollständig aus dem Ordner.`)) return;
     const ok = await verifyPermission(folderHandle, 'readwrite');
     if (!ok) return toast('❌ Schreibrechte verweigert.');
+    // Bugjagd 2026-08-30: hier standen zwei leere catch-Bloecke und danach
+    // unbedingt die Erfolgsmeldung. Schlug das Entfernen fehl -- Datei offen in
+    // einem anderen Programm, Schreibrecht entzogen --, stand "Eintrag
+    // geloescht" da, waehrend Beleg und Daten weiter im Ordner lagen.
+    const liegengeblieben = [];
     for (const f of (sub.files || [])) {
-      try { await folderHandle.removeEntry(f.fileName); } catch {}
+      try { await folderHandle.removeEntry(f.fileName); } catch { liegengeblieben.push(f.fileName); }
     }
-    try { await folderHandle.removeEntry(sub.id); } catch {}
-    toast('🗑 Eintrag gelöscht.');
+    let datensatzWeg = true;
+    try { await folderHandle.removeEntry(sub.id); } catch { datensatzWeg = false; }
+    if (!datensatzWeg) {
+      toast('❌ Eintrag konnte nicht gelöscht werden — er liegt weiter im Ordner.');
+    } else if (liegengeblieben.length) {
+      toast('⚠️ Eintrag gelöscht, aber im Ordner liegen geblieben: ' + liegengeblieben.join(', '));
+    } else {
+      toast('🗑 Eintrag gelöscht.');
+    }
     await renderEntries();
   }
   let currentLightboxObjectUrl = null;
