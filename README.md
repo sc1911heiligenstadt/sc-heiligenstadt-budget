@@ -12,6 +12,21 @@ Saison-Budget des Vereins: Einnahmen und Ausgaben planen, eingereichte Belege pr
 | [Geschäftsstelle](https://sc1911heiligenstadt.github.io/sc-heiligenstadt-budget/geschaeftsstelle.html) | Eingegangene Belege prüfen, korrigieren und als geprüft markieren — ohne Einblick in die Budgetplanung. |
 | [Vereinsbudget](https://sc1911heiligenstadt.github.io/sc-heiligenstadt-budget/vereinsbudget.html) | Budgetübersicht, Einnahmen/Ausgaben und Belegverwaltung für den Kassierer. |
 
+## Wie ein Beleg durchläuft
+
+1. Ein Helfer fotografiert den Beleg am Handy und reicht ihn über **Beleg-Eingang** ein.
+2. Die **Geschäftsstelle** prüft ihn, korrigiert bei Bedarf und markiert ihn als geprüft.
+3. Im **Vereinsbudget** ordnet der Kassierer ihn dem Haushalt zu.
+
+Jede Rolle sieht dabei nur ihren Schritt: Die Geschäftsstelle bekommt die Belege,
+aber keinen Einblick in die Budgetplanung.
+
+## Wichtig: nicht die Vereinsverwaltung
+
+Hier geht es um das **Saison-Budget** und die Belege. Mitglieder, Beiträge und
+Beitragsläufe stehen in der
+[Vereinsverwaltung](https://sc1911heiligenstadt.github.io/vereinsverwaltung/).
+
 ## Zugang
 
 Jede der drei Seiten ist mit einem eigenen Passwort geschützt, nicht über das Vereinskonto — so sieht die Geschäftsstelle die Belege, ohne Einblick in die Budgetplanung zu bekommen.
