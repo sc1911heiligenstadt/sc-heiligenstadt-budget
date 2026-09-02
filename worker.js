@@ -3,7 +3,7 @@
 //
 // Deploy: Cloudflare Dashboard -> Workers & Pages -> Create Worker -> diesen
 // Code einfuegen -> Settings -> Variables -> Secret "NEXTCLOUD_SHARE_TOKEN"
-// anlegen (Wert: der Token aus dem Freigabelink, z.B. "kr8K5LHTHoM2wXS").
+// anlegen (Wert: der Token aus dem Freigabelink, der 15-stellige Wert hinter /s/ im Freigabelink).
 //
 // Der Zugriffscode fuer Helfer ist KEIN eigenes Secret hier mehr - er wird
 // per verify-action-password an die zentrale ToolsUebersicht-Landingpage
