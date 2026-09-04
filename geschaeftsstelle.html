@@ -228,21 +228,21 @@
     <p class="hint">Bereits abgelegte Belege — zur Nachverfolgung, nicht mehr in der aktiven Liste.</p>
     <div id="archiveFilterBar" class="filter-bar" style="display:none">
       <div class="field-group">
-        <label>🔎 Suche (Beschreibung, Name, Notiz)</label>
+        <label for="archiveFilterText">🔎 Suche (Beschreibung, Name, Notiz)</label>
         <input type="text" id="archiveFilterText" oninput="renderArchive()" placeholder="z. B. Tanken" />
       </div>
       <div class="row2">
         <div class="field-group">
-          <label>Von</label>
+          <label for="archiveFilterFrom">Von</label>
           <input type="date" id="archiveFilterFrom" onchange="renderArchive()" />
         </div>
         <div class="field-group">
-          <label>Bis</label>
+          <label for="archiveFilterTo">Bis</label>
           <input type="date" id="archiveFilterTo" onchange="renderArchive()" />
         </div>
       </div>
       <div class="field-group">
-        <label>Sortierung</label>
+        <label for="archiveSortOrder">Sortierung</label>
         <select id="archiveSortOrder" onchange="renderArchive()">
           <option value="desc">Neueste zuerst</option>
           <option value="asc">Älteste zuerst</option>
@@ -516,15 +516,15 @@
         ${editingId === s.id ? `
         <div class="edit-form">
           <div class="row2">
-            <div><label>Name</label><input type="text" id="edit_name_${s.id}" value="${escapeHtml(s.name || '')}" /></div>
-            <div><label>Betrag (€)</label><input type="number" step="0.01" id="edit_amount_${s.id}" value="${s.amount ?? ''}" /></div>
+            <div><label for="edit_name_${s.id}">Name</label><input type="text" id="edit_name_${s.id}" value="${escapeHtml(s.name || '')}" /></div>
+            <div><label for="edit_amount_${s.id}">Betrag (€)</label><input type="number" step="0.01" id="edit_amount_${s.id}" value="${s.amount ?? ''}" /></div>
           </div>
           <div class="row2">
-            <div><label>Datum</label><input type="date" id="edit_date_${s.id}" value="${escapeHtml(s.date || '')}" /></div>
-            <div><label>Beschreibung</label><input type="text" id="edit_desc_${s.id}" value="${escapeHtml(s.desc || '')}" /></div>
+            <div><label for="edit_date_${s.id}">Datum</label><input type="date" id="edit_date_${s.id}" value="${escapeHtml(s.date || '')}" /></div>
+            <div><label for="edit_desc_${s.id}">Beschreibung</label><input type="text" id="edit_desc_${s.id}" value="${escapeHtml(s.desc || '')}" /></div>
           </div>
-          <div><label>Notiz (Helfer)</label><textarea id="edit_note_${s.id}" rows="2">${escapeHtml(s.note || '')}</textarea></div>
-          <div><label>Interner Kommentar (Geschäftsstelle, sichtbar im Vereinsbudget)</label><textarea id="edit_gsnote_${s.id}" rows="2">${escapeHtml(s.gsNote || '')}</textarea></div>
+          <div><label for="edit_note_${s.id}">Notiz (Helfer)</label><textarea id="edit_note_${s.id}" rows="2">${escapeHtml(s.note || '')}</textarea></div>
+          <div><label for="edit_gsnote_${s.id}">Interner Kommentar (Geschäftsstelle, sichtbar im Vereinsbudget)</label><textarea id="edit_gsnote_${s.id}" rows="2">${escapeHtml(s.gsNote || '')}</textarea></div>
           <div style="display:flex;gap:8px;">
             <button class="btn btn-green btn-sm" onclick="saveEdit('${s.id}')">💾 Speichern</button>
             <button class="btn btn-gray btn-sm" onclick="toggleEdit(null)">Abbrechen</button>

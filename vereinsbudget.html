@@ -554,11 +554,11 @@
 </header>
 
 <div class="season-bar">
-  <label>Verein:</label>
+  <label for="clubName">Verein:</label>
   <input type="text" id="clubName" placeholder="z. B. SV Musterstadt" style="width:200px" />
-  <label>Saison:</label>
+  <label for="seasonSelect">Saison:</label>
   <select id="seasonSelect"></select>
-  <label>👤 Dein Name:</label>
+  <label for="userName">👤 Dein Name:</label>
   <input type="text" id="userName" placeholder="z. B. Max Mustermann" style="width:140px" />
   <button class="btn btn-gray btn-sm" onclick="clearAll()">🗑 Saison leeren</button>
   <span class="missing-links" id="missingLinksBar"></span>
@@ -595,15 +595,15 @@
       <div class="card-body">
         <div class="entry-form">
           <div class="field-group" style="grid-column:1/-1">
-            <label>Beschreibung</label>
+            <label for="incDesc">Beschreibung</label>
             <input type="text" id="incDesc" placeholder="z. B. Mitgliedsbeiträge Q1" />
           </div>
           <div class="field-group">
-            <label>Betrag (€)</label>
+            <label for="incAmount">Betrag (€)</label>
             <input type="number" id="incAmount" placeholder="0,00" min="0" step="0.01" />
           </div>
           <div class="field-group cat-field-wrap">
-            <label>Kategorie</label>
+            <label for="incCat">Kategorie</label>
             <select id="incCat"></select>
             <button class="cat-gear" onclick="toggleCatManager('income')">⚙️ verwalten</button>
           </div>
@@ -631,19 +631,19 @@
         </button>
         <div class="filter-bar collapsed" id="incFilterBar">
           <div class="filter-field grow">
-            <label>Suche</label>
+            <label for="incFilterSearch">Suche</label>
             <input type="text" id="incFilterSearch" placeholder="Beschreibung oder Name…" oninput="applyListFilters('income')" />
           </div>
           <div class="filter-field">
-            <label>Kategorie</label>
+            <label for="incFilterCat">Kategorie</label>
             <select id="incFilterCat" onchange="applyListFilters('income')"><option value="">Alle</option></select>
           </div>
           <div class="filter-field">
-            <label>Von</label>
+            <label for="incFilterFrom">Von</label>
             <input type="date" id="incFilterFrom" onchange="applyListFilters('income')" />
           </div>
           <div class="filter-field">
-            <label>Bis</label>
+            <label for="incFilterTo">Bis</label>
             <input type="date" id="incFilterTo" onchange="applyListFilters('income')" />
           </div>
           <div class="filter-field-checkbox">
@@ -662,15 +662,15 @@
       <div class="card-body">
         <div class="entry-form">
           <div class="field-group" style="grid-column:1/-1">
-            <label>Beschreibung</label>
+            <label for="expDesc">Beschreibung</label>
             <input type="text" id="expDesc" placeholder="z. B. Platzmiete März" />
           </div>
           <div class="field-group">
-            <label>Betrag (€)</label>
+            <label for="expAmount">Betrag (€)</label>
             <input type="number" id="expAmount" placeholder="0,00" min="0" step="0.01" />
           </div>
           <div class="field-group cat-field-wrap">
-            <label>Kategorie</label>
+            <label for="expCat">Kategorie</label>
             <select id="expCat"></select>
             <button class="cat-gear" onclick="toggleCatManager('expense')">⚙️ verwalten</button>
           </div>
@@ -698,19 +698,19 @@
         </button>
         <div class="filter-bar collapsed" id="expFilterBar">
           <div class="filter-field grow">
-            <label>Suche</label>
+            <label for="expFilterSearch">Suche</label>
             <input type="text" id="expFilterSearch" placeholder="Beschreibung oder Name…" oninput="applyListFilters('expense')" />
           </div>
           <div class="filter-field">
-            <label>Kategorie</label>
+            <label for="expFilterCat">Kategorie</label>
             <select id="expFilterCat" onchange="applyListFilters('expense')"><option value="">Alle</option></select>
           </div>
           <div class="filter-field">
-            <label>Von</label>
+            <label for="expFilterFrom">Von</label>
             <input type="date" id="expFilterFrom" onchange="applyListFilters('expense')" />
           </div>
           <div class="filter-field">
-            <label>Bis</label>
+            <label for="expFilterTo">Bis</label>
             <input type="date" id="expFilterTo" onchange="applyListFilters('expense')" />
           </div>
           <div class="filter-field-checkbox">
