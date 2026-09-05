@@ -1068,6 +1068,13 @@
     }
     cats.push(name);
     setCategories(type, cats);
+    // ⚠️ Die Kategorienlisten gehören seit v4 zum Dateiinhalt (buildExportData) und
+    // werden beim Laden aus der Datei zurückgeschrieben. Ohne diese beiden Zeilen
+    // stand die Statusleiste weiter auf „Gespeichert", die verknüpfte Datei blieb
+    // unangetastet und der nächste Start holte die alte Liste zurück — dieselbe
+    // Doppelung wie in saveClub().
+    markUnsaved();
+    scheduleAutoSave();
     input.value = '';
     renderCategorySelect(type);
     renderCatChips(type);
@@ -1079,6 +1086,10 @@
     if (cats.length <= 1) return toast('⚠️ Mindestens eine Kategorie muss bestehen bleiben.');
     if (!confirm(`Kategorie „${name}" löschen? Bereits gespeicherte Einträge behalten ihre Kategorie-Bezeichnung weiterhin.`)) return;
     setCategories(type, cats.filter(c => c !== name));
+    // ⚠️ Siehe addCategory: ohne markUnsaved/scheduleAutoSave ist die gelöschte
+    // Kategorie beim nächsten Start aus der verknüpften Datei wieder da.
+    markUnsaved();
+    scheduleAutoSave();
     renderCategorySelect(type);
     renderCatChips(type);
     toast(`🗑 Kategorie „${name}" gelöscht`);
@@ -2288,6 +2299,7 @@
   // ── Versionsinfo ─────────────────────────────────────────────────────────
   const APP_VERSION = '1.0';
   const CHANGELOG = [
+    'Eine neu angelegte oder gelöschte Kategorie wird jetzt sofort in die verknüpfte Datei geschrieben — vorher stand die Anzeige auf „Gespeichert", die Datei blieb aber unverändert und beim nächsten Öffnen war die Kategorie wieder da bzw. wieder weg',
     'Am Handy sind Eingabefelder mindestens 16 Pixel groß — der iPhone-Browser zoomt beim Antippen nicht mehr ungefragt in die Seite hinein',
     'Zugang zum Vereinsbudget ist passwortgeschützt — das Passwort wird serverseitig geprüft und steht nicht im öffentlichen Quellcode',
     'Einnahmen & Ausgaben mit Kategorien, frei anlegbar und löschbar',
