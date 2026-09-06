@@ -27,8 +27,37 @@ const NEXTCLOUD_BASE = 'https://nx88695.your-storageshare.de/public.php/dav/file
 const MAX_FILES = 10;
 const MAX_FILE_BYTES = 10 * 1024 * 1024;   // 10 MB pro Datei
 const MAX_TOTAL_BYTES = 25 * 1024 * 1024;  // 25 MB pro Einreichung
-const ALLOWED_MIME = /^(image\/|application\/pdf$)/;
-const ALLOWED_EXT = /\.(jpe?g|png|gif|webp|heic|heif|pdf)$/i;
+
+// Der Dateityp wird aus den ERSTEN BYTES bestimmt, nicht aus file.type und
+// nicht aus der Endung im Dateinamen. Beides kommt vom Client und ist damit
+// eine Behauptung: eine Datei mit type "image/png" und Name "beleg.html" hat
+// frueher BEIDE Zweige eines ODER bestanden, und die Endung wurde ungeprueft
+// aus dem Namen geschnitten und an die Datei im Eingangsordner der
+// Geschaeftsstelle gehaengt. Gleiches Muster wie admin-worker.js:15476-15480.
+//
+// Die zurueckgegebene Endung ist zugleich die Endung der abgelegten Datei --
+// aus einer festen Liste, nicht aus dem Namen des Absenders.
+const HEIF_MARKEN = new Set([
+  'heic', 'heix', 'hevc', 'heim', 'heis', 'hevm', 'hevs', 'mif1', 'msf1'
+]);
+
+function erkenneDateiTyp(kopf) {
+  const b = new Uint8Array(kopf);
+  if (b.length < 12) return null;
+  const text = (von, laenge) =>
+    String.fromCharCode(...b.slice(von, von + laenge));
+
+  if (b[0] === 0xff && b[1] === 0xd8 && b[2] === 0xff) return { ext: '.jpg', mime: 'image/jpeg' };
+  if (b[0] === 0x89 && b[1] === 0x50 && b[2] === 0x4e && b[3] === 0x47 &&
+      b[4] === 0x0d && b[5] === 0x0a && b[6] === 0x1a && b[7] === 0x0a)
+    return { ext: '.png', mime: 'image/png' };
+  if (text(0, 4) === 'GIF8') return { ext: '.gif', mime: 'image/gif' };
+  if (text(0, 4) === 'RIFF' && text(8, 4) === 'WEBP') return { ext: '.webp', mime: 'image/webp' };
+  if (text(4, 4) === 'ftyp' && HEIF_MARKEN.has(text(8, 4).toLowerCase()))
+    return { ext: '.heic', mime: 'image/heic' };
+  if (text(0, 4) === '%PDF') return { ext: '.pdf', mime: 'application/pdf' };
+  return null;
+}
 
 // Optionale Korrelations-Id bei Deep-Link aus Fahrtenbuch (?fahrtId=... in
 // beleg-eingang.html). Fahrtenbuch-Trip-Ids sind UUIDs (crypto.randomUUID) - nur
@@ -151,9 +180,11 @@ export default {
         return badRequest(`Zu viele Dateien (max. ${MAX_FILES}).`);
       }
       let totalBytes = 0;
+      const typen = [];   // je Datei der aus den ersten Bytes erkannte Typ
       for (const file of files) {
-        const typeOk = ALLOWED_MIME.test(file.type || '') || ALLOWED_EXT.test(file.name || '');
-        if (!typeOk) return badRequest('Nur Bilder oder PDF-Dateien sind erlaubt.');
+        const typ = erkenneDateiTyp(await file.slice(0, 16).arrayBuffer());
+        if (!typ) return badRequest('Nur Bilder oder PDF-Dateien sind erlaubt.');
+        typen.push(typ);
         if (file.size > MAX_FILE_BYTES) return badRequest('Eine Datei ist zu groß (max. 10 MB).');
         totalBytes += file.size;
       }
@@ -166,14 +197,15 @@ export default {
       const fileEntries = [];
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
-        const dotIdx = file.name.lastIndexOf('.');
-        const ext = dotIdx >= 0 ? file.name.slice(dotIdx) : '';
+        // Endung und Content-Type aus dem erkannten Typ, nicht aus dem
+        // Dateinamen bzw. file.type des Absenders.
+        const ext = typen[i].ext;
         const receiptFileName = files.length > 1 ? `${baseName}_${i + 1}${ext}` : `${baseName}${ext}`;
-        await putToNextcloud(token, receiptFileName, await file.arrayBuffer(), file.type);
+        await putToNextcloud(token, receiptFileName, await file.arrayBuffer(), typen[i].mime);
         fileEntries.push({
           fileName: receiptFileName,
           fileOrigName: file.name,
-          fileMime: file.type || 'application/octet-stream',
+          fileMime: typen[i].mime,
         });
       }
       const metaFileName = `${baseName}.meta.json`;
