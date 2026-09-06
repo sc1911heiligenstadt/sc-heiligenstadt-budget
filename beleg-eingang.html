@@ -9,14 +9,14 @@
   :root {
     --blue: #1a56a0;
     --blue-light: #e8f0fb;
-    --green: #2d8c4e;
+    --green: #276e40;  /* 06.09.2026: war #2d8c4e -- weisse Schrift darauf kam auf 4.22:1, WCAG AA verlangt 4.5. Jetzt 6.19. */
     --green-light: #e8f5ed;
-    --orange: #f59e0b;
+    --orange: #b55e0b; /* 06.09.2026: war #f59e0b -- weisse Schrift darauf kam auf 2.15:1. Jetzt 4.52. */
     --orange-light: #fef3c7;
     --gray: #f4f5f7;
     --border: #dde1e8;
     --text: #1e2330;
-    --muted: #6b7280;
+    --muted: #676e7c;
     --white: #ffffff;
     --shadow: 0 2px 12px rgba(0,0,0,0.08);
     --radius: 12px;
@@ -152,7 +152,12 @@
 .ds-inhalt ul { margin: 0 0 8px; padding-left: 18px; }
 .ds-inhalt li { margin: 2px 0; }
 .ds-inhalt a { color: var(--blue, #1f4e9c); }
-</style>
+
+/* ⚠️ Ohne diese Regel nimmt der Browser seine Vorgabe #757575 -- auf weissem
+   Grund sind das nur 4.22:1, WCAG AA verlangt 4.5. Gemessen am 06.09.2026.
+   #676e7c bringt 5.12:1. */
+::placeholder { color: #676e7c; opacity: 1; }
+  </style>
 </head>
 <body>
 <header>
