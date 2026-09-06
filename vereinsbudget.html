@@ -619,7 +619,7 @@
         </div>
         <div class="cat-manager" id="incCatManager">
           <div class="cat-add-row">
-            <input type="text" id="incCatNew" placeholder="Neue Kategorie eingeben…" />
+            <input type="text" id="incCatNew" aria-label="Neue Kategorie für Einnahmen" placeholder="Neue Kategorie eingeben…" />
             <button class="btn btn-green btn-sm" onclick="addCategory('income')">+ Anlegen</button>
           </div>
           <div class="cat-chip-list" id="incCatChips"></div>
@@ -686,7 +686,7 @@
         </div>
         <div class="cat-manager" id="expCatManager">
           <div class="cat-add-row">
-            <input type="text" id="expCatNew" placeholder="Neue Kategorie eingeben…" />
+            <input type="text" id="expCatNew" aria-label="Neue Kategorie für Ausgaben" placeholder="Neue Kategorie eingeben…" />
             <button class="btn btn-red btn-sm" onclick="addCategory('expense')">+ Anlegen</button>
           </div>
           <div class="cat-chip-list" id="expCatChips"></div>
@@ -898,7 +898,7 @@
           <button class="btn btn-gray btn-sm" id="lightboxNext" title="Nächster Beleg">›</button>
         </span>
         <button class="btn btn-blue btn-sm" id="lightboxDownload">⬇ Herunterladen</button>
-        <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+        <button class="lightbox-close" aria-label="Beleganzeige schließen" title="Schließen" onclick="closeLightbox()">✕</button>
       </div>
     </div>
     <div class="lightbox-body" id="lightboxBody"></div>
@@ -1851,7 +1851,7 @@
           if (att.mime && att.mime.startsWith('image/')) {
             const src = await getAttachmentSrc(att, objectUrls);
             bodyHtml = src
-              ? `<img class="print-receipt-img" src="${src}" />`
+              ? `<img class="print-receipt-img" src="${src}" alt="Beleg: ${escapeHtml(att.name || 'ohne Namen')}" />`
               : `<div class="print-receipt-missing-block">⚠️ Bild konnte nicht geladen werden (${unavailableReason(att)})</div>`;
           } else if (att.mime === 'application/pdf') {
             const src = await getAttachmentSrc(att, objectUrls);
