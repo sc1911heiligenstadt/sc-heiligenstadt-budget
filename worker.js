@@ -56,6 +56,18 @@ function erkenneDateiTyp(kopf) {
   if (text(4, 4) === 'ftyp' && HEIF_MARKEN.has(text(8, 4).toLowerCase()))
     return { ext: '.heic', mime: 'image/heic' };
   if (text(0, 4) === '%PDF') return { ext: '.pdf', mime: 'application/pdf' };
+
+  // ⚠️ Nachgetragen am 06.09.2026. Die Byte-Pruefung oben hat den Upload
+  // sicherer gemacht, dabei aber drei Bildformate ausgesperrt, die vorher ueber
+  // den image/*-Zweig durchgingen -- eine Verengung, die niemand wollte.
+  // BMP kommt aus aelteren Scannern, TIFF aus Kopierern mit Scan-to-Mail, AVIF
+  // aus neuen Android-Kameras. Alle drei sind hier legitime Belegfotos.
+  if (text(0, 2) === 'BM') return { ext: '.bmp', mime: 'image/bmp' };
+  if ((b[0] === 0x49 && b[1] === 0x49 && b[2] === 0x2a && b[3] === 0x00) ||
+      (b[0] === 0x4d && b[1] === 0x4d && b[2] === 0x00 && b[3] === 0x2a))
+    return { ext: '.tif', mime: 'image/tiff' };
+  if (text(4, 4) === 'ftyp' && ['avif', 'avis'].includes(text(8, 4).toLowerCase()))
+    return { ext: '.avif', mime: 'image/avif' };
   return null;
 }
 
